@@ -52,27 +52,33 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-    try {
-      dispatch(signUpStart());
-      const response = await fetch("/server/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    if( formData.password === formData.confirmPassword ){
 
-      const data = await response.json();
-
-      if (data.success === false) {
-        dispatch(signUpFailure(data.message));
-        return;
+      try {
+        dispatch(signUpStart());
+        const response = await fetch("/server/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        
+        const data = await response.json();
+        
+        if (data.success === false) {
+          dispatch(signUpFailure(data.message));
+          return;
+        }
+        
+        dispatch(signUpSuccess(data));
+        navigate("/sign-in");
+      } catch (error) {
+        dispatch(signUpFailure(Data.message));
       }
-
-      dispatch(signUpSuccess(data));
-      navigate("/sign-in");
-    } catch (error) {
-      dispatch(signUpFailure(Data.message));
+    } else {
+      // dispatch(signUpFailure(Data.message));
+      alert("Password and Confirm Password is not same");
     }
   };
 
