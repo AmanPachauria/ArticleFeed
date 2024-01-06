@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice.js";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
-    emailOrPhoneNumber: "", 
+    emailOrPhoneNumber: "",
     password: "",
   });
-  
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+
+  const { loading, error } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,28 +28,25 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-        setLoading(true);
-        const response = await fetch('/server/auth/signin', {
-             method: 'POST',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             body: JSON.stringify(formData),
-        });
-        const data = await response.json();
-        if( data.success === false ) {
-          setLoading(false);
-          setError(data.message);
-          return;
-        }
-        setLoading(false);
-        setError(null);
-        navigate('/');
+      dispatch(signInStart());
+      const response = await fetch("/server/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+        return;
+      }
+      dispatch(signInSuccess(data));
+      navigate("/");
     } catch (error) {
-        setLoading(false);
-        setError(error.message);
+      dispatch(signInFailure(error.message));
     }
   };
 
@@ -54,7 +58,7 @@ export default function SignIn() {
           <input
             className="border p-3 rounded-lg focus:outline-none focus:border-blue-500"
             type="text"
-            name="emailOrPhoneNumber" 
+            name="emailOrPhoneNumber"
             placeholder="Email or Phone Number"
             value={formData.emailOrPhoneNumber}
             onChange={handleChange}
@@ -72,10 +76,11 @@ export default function SignIn() {
           />
 
           <button
+            disabled={loading}
             type="submit"
             className="bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
           >
-            Sign In
+            {loading ? "Loading..." : "Sign In"}
           </button>
         </form>
       </div>

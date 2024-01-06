@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { signUpStart, signUpSuccess, signUpFailure } from '../redux/user/userSlice';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -13,9 +15,9 @@ const SignUp = () => {
     preferences: [],
   });
 
-  const [loading, setLoading] = useState(null);
-  const [error, setError] = useState(null);
+  const { error, loading } = useSelector( (state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleCheckboxChange = (preference) => {
     setFormData((prevData) => {
@@ -45,7 +47,7 @@ const SignUp = () => {
     e.preventDefault();
     console.log(formData);
     try {
-        setLoading(true);
+        dispatch(signUpStart());
         const response = await fetch('/server/auth/signup', {
           method: 'POST',
           headers: {
@@ -57,17 +59,14 @@ const SignUp = () => {
         const data = await response.json();
 
         if( data.success === false ) {
-           setLoading(false);
-           setError(data.message);
+           dispatch(signUpFailure(data.message));
            return;
         }
 
-        setLoading(false);
-        setError(null);
+        dispatch(signUpSuccess(data));
         navigate('/sign-in');
     } catch (error) {
-       setLoading(error);
-       setError(error.message);
+       dispatch(signUpFailure(Data.message));
     }
   };
 
