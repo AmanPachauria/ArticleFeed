@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signUpStart, signUpSuccess, signUpFailure } from '../redux/user/userSlice';
+import {
+  signUpStart,
+  signUpSuccess,
+  signUpFailure,
+} from "../redux/user/userSlice";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    userFirstName: '',
-    userLastName: '',
-    phoneNumber: '',
-    email: '',
-    dateOfBirth: '',
-    password: '',
-    confirmPassword: '',
+    userFirstName: "",
+    userLastName: "",
+    phoneNumber: "",
+    email: "",
+    dateOfBirth: "",
+    password: "",
+    confirmPassword: "",
     preferences: [],
   });
 
-  const { error, loading } = useSelector( (state) => state.user);
+  const { error, loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -24,7 +28,9 @@ const SignUp = () => {
       if (prevData.preferences.includes(preference)) {
         return {
           ...prevData,
-          preferences: prevData.preferences.filter((item) => item !== preference),
+          preferences: prevData.preferences.filter(
+            (item) => item !== preference
+          ),
         };
       } else {
         return {
@@ -47,26 +53,26 @@ const SignUp = () => {
     e.preventDefault();
     console.log(formData);
     try {
-        dispatch(signUpStart());
-        const response = await fetch('/server/auth/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
+      dispatch(signUpStart());
+      const response = await fetch("/server/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if( data.success === false ) {
-           dispatch(signUpFailure(data.message));
-           return;
-        }
+      if (data.success === false) {
+        dispatch(signUpFailure(data.message));
+        return;
+      }
 
-        dispatch(signUpSuccess(data));
-        navigate('/sign-in');
+      dispatch(signUpSuccess(data));
+      navigate("/sign-in");
     } catch (error) {
-       dispatch(signUpFailure(Data.message));
+      dispatch(signUpFailure(Data.message));
     }
   };
 
@@ -144,17 +150,16 @@ const SignUp = () => {
             onChange={handleChange}
             required
           />
-      
-          <div className="space-y-2">
 
+          <div className="space-y-2">
             <h5 className="text-lg font-semibold mb-2">Select Preferences</h5>
 
             <label className="flex items-center">
               <input
                 type="checkbox"
                 name="sports"
-                checked={formData.preferences.includes('sports')}
-                onChange={() => handleCheckboxChange('sports')}
+                checked={formData.preferences.includes("sports")}
+                onChange={() => handleCheckboxChange("sports")}
               />
               <span className="ml-2">Sports</span>
             </label>
@@ -163,8 +168,8 @@ const SignUp = () => {
               <input
                 type="checkbox"
                 name="space"
-                checked={formData.preferences.includes('space')}
-                onChange={() => handleCheckboxChange('space')}
+                checked={formData.preferences.includes("space")}
+                onChange={() => handleCheckboxChange("space")}
               />
               <span className="ml-2">Space</span>
             </label>
@@ -173,8 +178,8 @@ const SignUp = () => {
               <input
                 type="checkbox"
                 name="coding"
-                checked={formData.preferences.includes('coding')}
-                onChange={() => handleCheckboxChange('coding')}
+                checked={formData.preferences.includes("coding")}
+                onChange={() => handleCheckboxChange("coding")}
               />
               <span className="ml-2">Coding</span>
             </label>
@@ -183,8 +188,8 @@ const SignUp = () => {
               <input
                 type="checkbox"
                 name="politics"
-                checked={formData.preferences.includes('politics')}
-                onChange={() => handleCheckboxChange('politics')}
+                checked={formData.preferences.includes("politics")}
+                onChange={() => handleCheckboxChange("politics")}
               />
               <span className="ml-2">Politics</span>
             </label>
@@ -196,6 +201,14 @@ const SignUp = () => {
           >
             Sign Up
           </button>
+
+          <div className="flex gap-2 mt-5">
+            <p>Have an account?</p>
+            <Link to={"/sign-in"}>
+              <span className="text-blue-700">Sign in</span>
+            </Link>
+          </div>
+          {error && <p className="text-red-500 mt-5">{error}</p>}
         </form>
       </div>
     </div>
