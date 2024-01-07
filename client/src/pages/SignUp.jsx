@@ -6,6 +6,7 @@ import {
   signUpSuccess,
   signUpFailure,
 } from "../redux/user/userSlice";
+import { current } from "@reduxjs/toolkit";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -77,8 +78,7 @@ const SignUp = () => {
         dispatch(signUpFailure(Data.message));
       }
     } else {
-      // dispatch(signUpFailure(Data.message));
-      alert("Password and Confirm Password is not same");
+      alert("Password and Confirm Password should be same");
     }
   };
 

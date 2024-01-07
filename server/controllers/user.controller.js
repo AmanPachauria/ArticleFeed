@@ -17,24 +17,27 @@ export const updateUser = async (req, res, next) => {
             req.body.password = bcryptjs.hashSync(req.body.password, 10);
         }
 
-        const updateUser = await User.findByIdAndUpdate(
+        const updatedUser = await User.findByIdAndUpdate(
             req.params.id,
             {
                 $set: {
-                    userFirstName: req.body.userFirstName,
-                    userLastName: req.body.userLastName,
-                    phoneNumber: req.body.phoneNumber,
-                    email: req.body.email,
-                    dateOfBirth: req.body.dateOfBirth,
-                    password: req.body.password,
-                    preferences: req.body.preferences,
-                    avatar: req.body.avatar,
+                    userFirstName: req.body.userFirstName || req.user.userFirstName,
+                    userLastName: req.body.userLastName || req.user.userLastName,
+                    phoneNumber: req.body.phoneNumber || req.user.phoneNumber,
+                    email: req.body.email || req.user.phoneNumber,
+                    dateOfBirth: req.body.dateOfBirth || req.user.dateOfBirth,
+                    password: req.body.password || req.user.password,
+                    preferences: req.body.preferences || req.user.preferences,
+                    avatar: req.body.avatar || req.user.avatar,
                 },
             },
-            {neq: true}
+            { new: true }
         );
+        
+        // updateUser = await User.findOne({_id: req.params.id});
+        console.log(updatedUser);
 
-        const { password, ...rest } = updateUser._doc;
+        const { password, ...rest } = updatedUser._doc;
         res.status(200).json(rest);
     } catch (error) {
         next(error);
