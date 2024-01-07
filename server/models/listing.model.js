@@ -10,10 +10,6 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    imageUrls: {
-      type: Array,
-      required: true,
-    },
     tags:{
         type: String,
         required: true,
@@ -21,6 +17,10 @@ const listingSchema = new mongoose.Schema(
     category: {
         type: String,
         required: true,
+    },
+    imageUrls: {
+      type: Array,
+      required: true,
     },
     userRef: {
       type: String,

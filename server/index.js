@@ -26,7 +26,7 @@ app.listen(3000, ()=> {
 app.use(express.json());
 app.use('/server/user', userRouter);
 app.use('/server/auth', authRouter);
-app.use('/server/isting', listingRouter);
+app.use('/server/listing', listingRouter);
 
 app.use( (err, req, res, next) => {
     const statusCode = err.statusCode || 500;
