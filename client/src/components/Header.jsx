@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 export default function Header() {
   const { currentUser } = useSelector( (state) => state.user);
+  console.log(currentUser.avatar);
   return (
     <header className='bg-gradient-to-r from-indigo-600 to-purple-600 shadow-md text-white'>
       <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>

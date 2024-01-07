@@ -121,7 +121,12 @@ export default function Profile() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            ...formData,
+            preferences: formData.preferences.length
+              ? formData.preferences
+              : currentUser.preferences,
+          }),
         });
         const data = await res.json();
         if (data.success === false) {
@@ -229,50 +234,65 @@ export default function Profile() {
             defaultValue={currentUser.confirmPassword}
           />
 
-          <div className="space-y-2">
-            <h6 className="text-lg font-semibold mb-2">
-              Select New Preferences
-            </h6>
+          <div className="flex flex-col space-y-4 p-4 border border-gray-300 rounded-md">
+            <h2 className="text-xl font-semibold mb-4">Current Preferences</h2>
+            <div className="flex flex-wrap space-x-2">
+              {currentUser.preferences.map((preference, index) => (
+                <span key={index} className="px-3 py-1 bg-gray-200 rounded-md">
+                  {preference}
+                </span>
+              ))}
+            </div>
 
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="sports"
-                checked={formData.preferences.includes("sports")}
-                onChange={() => handleCheckboxChange("sports")}
-              />
-              <span className="ml-2">Sports</span>
-            </label>
+            <div>
+              <h2 className="text-xl font-semibold my-4">
+                Select New Preferences
+              </h2>
 
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="space"
-                checked={formData.preferences.includes("space")}
-                onChange={() => handleCheckboxChange("space")}
-              />
-              <span className="ml-2">Space</span>
-            </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="sports"
+                  checked={formData.preferences.includes("sports")}
+                  onChange={() => handleCheckboxChange("sports")}
+                  className="mr-2"
+                />
+                <span className="text-lg">Sports</span>
+              </label>
 
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="coding"
-                checked={formData.preferences.includes("coding")}
-                onChange={() => handleCheckboxChange("coding")}
-              />
-              <span className="ml-2">Coding</span>
-            </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="space"
+                  checked={formData.preferences.includes("space")}
+                  onChange={() => handleCheckboxChange("space")}
+                  className="mr-2"
+                />
+                <span className="text-lg">Space</span>
+              </label>
 
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="politics"
-                checked={formData.preferences.includes("politics")}
-                onChange={() => handleCheckboxChange("politics")}
-              />
-              <span className="ml-2">Politics</span>
-            </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="coding"
+                  checked={formData.preferences.includes("coding")}
+                  onChange={() => handleCheckboxChange("coding")}
+                  className="mr-2"
+                />
+                <span className="text-lg">Coding</span>
+              </label>
+
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="politics"
+                  checked={formData.preferences.includes("politics")}
+                  onChange={() => handleCheckboxChange("politics")}
+                  className="mr-2"
+                />
+                <span className="text-lg">Politics</span>
+              </label>
+            </div>
           </div>
 
           <button

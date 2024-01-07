@@ -9,6 +9,7 @@ import {
 import { current } from "@reduxjs/toolkit";
 
 const SignUp = () => {
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     userFirstName: "",
     userLastName: "",
@@ -17,10 +18,10 @@ const SignUp = () => {
     dateOfBirth: "",
     password: "",
     confirmPassword: "",
+    avatar: currentUser.avatar,
     preferences: [],
   });
 
-  const { error, loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
