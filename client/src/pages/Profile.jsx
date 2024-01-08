@@ -26,7 +26,7 @@ import {
 
 export default function Profile() {
   const fileRef = useRef(null);
-  const { currentUser, error, loading } = useSelector((state) => state.user);
+  const { currentUser, error, loading, articleLosding } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
@@ -374,11 +374,12 @@ export default function Profile() {
           </Link>
           
           <button
+            disabled={articleLosding}
             onClick={handleShowListings}
             className="bg-blue-400 hover:bg-blue-600 text-white py-2 rounded-lg text-center hover:opacity-95"
             to={"/show-user-article"}
-          >
-             Show Article
+          >  
+            { articleLosding ? " Loading... " : "Show Article"}
           </button>
         </div>
           

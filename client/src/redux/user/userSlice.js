@@ -5,6 +5,7 @@ const initialState = {
   userListings: [],
   error: null,
   loading: false,
+  articleLosding: false,
 };
 
 const userSlice = createSlice({
@@ -71,16 +72,16 @@ const userSlice = createSlice({
       state.loading = false;
     },
     setUserListingStart: (state) => {
-      state.loading = true;
+      state.articleLosding = true;
     },
     setUserListingSuccess: (state, action) => {
       state.userListings = action.payload;
-      state.loading = false;
+      state.articleLosding = false;
       state.error = null;
     },
     setUserListingFailure: (state, action) => {
       state.userListings = action.payload;
-      state.loading = false;
+      state.articleLosding = false;
     },
     setDeleteListing: (state, action) => {
         const deletedListingId = action.payload; // Assuming action.payload contains the deleted listing ID
