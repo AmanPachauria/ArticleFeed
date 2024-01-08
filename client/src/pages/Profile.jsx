@@ -1,13 +1,14 @@
-import React from "react";
+import { app } from "../firebase";
 import { useSelector } from "react-redux";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, react } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getStorage,
   uploadBytesResumable,
   getDownloadURL,
   ref,
 } from "firebase/storage";
-import { app } from "../firebase";
 import {
   updateUserStart,
   updateUserSuccess,
@@ -17,11 +18,11 @@ import {
   deleteUserFailure,
   signOutUserStart,
   signOutUserFailure,
-  signOutUserSuccess
+  signOutUserSuccess,
+  setUserListingStart,
+  setUserListingSuccess,
+  setUserListingFailure
 } from "../redux/user/userSlice";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from 'react-router-dom'
-
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -44,7 +45,6 @@ export default function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(currentUser.preferences);
 
   useEffect(() => {
     if (file) {
@@ -95,7 +95,6 @@ export default function Profile() {
   };
 
   const handleChange = (e) => {
-    console.log(formData);
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -142,7 +141,7 @@ export default function Profile() {
           dispatch(updateUserFailure(data.message));
           return;
         }
-        console.log(data);
+
         dispatch(updateUserSuccess(data));
         setUpdateSuccess(true);
         resetForm();
@@ -152,39 +151,56 @@ export default function Profile() {
     }
   };
 
-
   const handleDeleteUser = async () => {
-     try {
-       dispatch(deleteUserStart());
-       const res = await fetch(`/server/user/delete/${currentUser._id}`, {
-          method: 'DELETE',
-       });
-       const data = await res.json();
-       if( data.success === false) {
-          dispatch(deleteUserFailure(data.message));
-          return;
-       }
-       dispatch(deleteUserSuccess(data));
-     } catch (error) {
-        dispatch(deleteUserFailure(error.message));
-     }
-  }
-
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/server/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
 
   const handleSignOut = async () => {
     try {
-        dispatch(signOutUserStart());
-        const res = await fetch('/server/auth/signout');
-        const data = await res.json();
-        if( data.success === false ) {
-           dispatch(signOutUserFailure(data.message));
-           return;
-        }
-        dispatch(signOutUserSuccess(data));
+      dispatch(signOutUserStart());
+      const res = await fetch("/server/auth/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message));
+        return;
+      }
+      dispatch(signOutUserSuccess(data));
     } catch (error) {
       dispatch(signOutUserFailure(data.message));
     }
-  }
+  };
+
+  const handleShowListings = async () => {
+     dispatch(setUserListingStart());
+    try {
+      const res = await fetch(`/server/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(setUserListingFailure(data.message));
+        return;
+      }
+       
+      console.log(data);
+      dispatch(setUserListingSuccess(data));
+      navigate('/show-user-article');
+    } catch (error) {
+      dispatch(setUserListingFailure(error));
+    }
+  };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -345,36 +361,42 @@ export default function Profile() {
           >
             {loading ? "Loading..." : "Update"}
           </button>
-          
-          
-          <Link
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-center hover:opacity-95"
-                  to={"/create-listing"}
-                >
-                  Create Article
-            </Link>
-          
+
         </form>
+
+
+        <div className="flex flex-col gap-3 mt-5">
+            <Link
+            className="bg-blue-400 hover:bg-blue-600 text-white py-2 rounded-lg text-center hover:opacity-95"
+            to={"/create-listing"}
+          >
+            Create Article
+          </Link>
+          
+          <button
+            onClick={handleShowListings}
+            className="bg-blue-400 hover:bg-blue-600 text-white py-2 rounded-lg text-center hover:opacity-95"
+            to={"/show-user-article"}
+          >
+             Show Article
+          </button>
+        </div>
+          
         <div className="flex justify-between mt-5">
-          <span 
-             onClick={handleDeleteUser}
-             className="text-red-700 cursor-pointer"
-          >
-             Delete account
-          </span>
           <span
-             onClick={handleSignOut}
-             className="text-red-700 cursor-pointer"
+            onClick={handleDeleteUser}
+            className="text-red-700 cursor-pointer"
           >
-              Sign out
+            Delete account
+          </span>
+          <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+            Sign out
           </span>
         </div>
-        <p className="text-red-700 mt-5">
-            {error ? error : ''}
-          </p>
-          <p className="text-green-700 mt-5">
-             {updateSuccess ? "User is updated successfully" : ""}
-          </p>
+        <p className="text-red-700 mt-5">{error ? error : ""}</p>
+        <p className="text-green-700 mt-5">
+          {updateSuccess ? "User is updated successfully" : ""}
+        </p>
       </div>
     </div>
   );
