@@ -56,9 +56,14 @@ export default function ListingItem({ listing }) {
             >
               delete
             </button>
-            <button className="bg-blue-500 text-white py-1 p-3 mr-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
-              edit
-            </button>
+            <Link
+              to={`/update-listing/${listing._id}`}
+            >
+              <button 
+                  className="bg-blue-500 text-white py-1 p-3 mr-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
+                edit
+              </button>
+            </Link>
           </div>
         </div>
       </div>

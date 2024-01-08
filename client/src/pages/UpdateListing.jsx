@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   getDownloadURL,
   getStorage,
@@ -8,6 +8,7 @@ import {
 import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 
 export default function CreateListing() {
@@ -28,6 +29,30 @@ export default function CreateListing() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
+  const params = useParams();
+
+
+  useEffect( () => {
+    console.log("yes")
+     const fetchListing = async () => {
+        const listingId = params.listingId;
+        const res = await fetch(`/server/listing/get/${listingId}`);
+        console.log("yes1")
+        const data = await res.json();
+        if( data.success === false ) {
+            console.log(data.message);
+            return;
+        }
+        console.log("yes2")
+
+        console.log("current state data", data);
+        setFormData(data);
+     };
+
+     fetchListing();
+  }, []);
+
+
 
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
@@ -111,7 +136,7 @@ export default function CreateListing() {
         return setError("You must upload at least one image");
       setLoading(true);
       setError(false);
-      const res = await fetch("/server/listing/create", {
+      const res = await fetch(`/server/listing/update/${params.listingId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -137,16 +162,16 @@ export default function CreateListing() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded shadow-lg w-full max-w-md">
         <h1 className="text-3xl font-semibold mb-6 text-center">
-          Create Article
+          Update Article
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             className="border p-3 rounded-lg focus:outline-none focus:border-blue-500"
             type="text"
             name="title"
-            placeholder="Title"
             maxLength='200'
             minLength='1'
+            placeholder="Title"
             value={formData.title}
             onChange={handleChange}
             required
@@ -157,7 +182,6 @@ export default function CreateListing() {
             type="text"
             name="description"
             placeholder="Description"
-            minLength='10'
             value={formData.description}
             onChange={handleChange}
             required
@@ -168,7 +192,6 @@ export default function CreateListing() {
             type="text"
             name="tags"
             placeholder="Tags"
-            minLength='1'
             value={formData.tags}
             onChange={handleChange}
             required
@@ -276,7 +299,7 @@ export default function CreateListing() {
             disabled={loading || uploading}
             className="bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
           >
-            {loading ? "Creating..." : "Create Article"}
+            {loading ? "Creating..." : "Update Article"}
           </button>
           {error && <p className="text-red-700 text-sm">{error}</p>}
         </form>
