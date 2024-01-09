@@ -78,6 +78,7 @@ const SignUp = () => {
         console.log("navigate to /sign-in");
         navigate("/sign-in");
       } catch (error) {
+        console.log("error for signup", error)
         dispatch(signUpFailure(Data.message));
       }
     } else {
@@ -180,7 +181,7 @@ const SignUp = () => {
                 checked={formData.preferences.includes("space")}
                 onChange={() => handleCheckboxChange("space")}
               />
-              <span className="ml-2">Space</span>
+              <span className="ml-2">space</span>
             </label>
 
             <label className="flex items-center">
@@ -190,7 +191,7 @@ const SignUp = () => {
                 checked={formData.preferences.includes("coding")}
                 onChange={() => handleCheckboxChange("coding")}
               />
-              <span className="ml-2">Coding</span>
+              <span className="ml-2">coding</span>
             </label>
 
             <label className="flex items-center">
@@ -200,7 +201,7 @@ const SignUp = () => {
                 checked={formData.preferences.includes("politics")}
                 onChange={() => handleCheckboxChange("politics")}
               />
-              <span className="ml-2">Politics</span>
+              <span className="ml-2">politics</span>
             </label>
           </div>
 

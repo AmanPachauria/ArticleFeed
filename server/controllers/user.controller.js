@@ -76,3 +76,29 @@ export const getuserListings = async (req, res, next) => {
 };
 
 
+export const addArticleIdToBlock = async (req, res, next) => {
+    try {
+        const { listingId, userId } = req.body;
+
+        const user = await User.findById(userId);
+        if( !user){
+            return next(errorHandler(404, 'User not found!'));
+        }
+        const listing = await Listing.findById(listingId);
+        if( !listing ) {
+            return next(errorHandler(404, "User not found"));
+        } 
+
+        if(!user.blockArticle.includes(listingId)){
+            user.blockArticle.push(listingId);
+            await user.save();
+            res.status(200).json({message:'Listing blocked successfully!'});
+        }else {
+            res.status(200).json({ message: 'Listing is already blocked!' });
+          } 
+    } catch (error) {
+        next(error);
+    }
+};
+
+

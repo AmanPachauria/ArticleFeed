@@ -207,7 +207,7 @@ export default function CreateListing() {
                 checked={formData.category === "space"}
                 onChange={() => handleCategoryChange("space")}
               />
-              <span className="ml-1">Space</span>
+              <span className="ml-1">space</span>
             </label>
 
             <label>
@@ -229,7 +229,7 @@ export default function CreateListing() {
                 checked={formData.category === "coding"}
                 onChange={() => handleCategoryChange("coding")}
               />
-              <span className="ml-1">Coding</span>
+              <span className="ml-1">coding</span>
             </label>
 
             <label>
@@ -240,7 +240,7 @@ export default function CreateListing() {
                 checked={formData.category === "politics"}
                 onChange={() => handleCategoryChange("politics")}
               />
-              <span className="ml-1">Politics</span>
+              <span className="ml-1">politics</span>
             </label>
           </div>
 

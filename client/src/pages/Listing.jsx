@@ -5,6 +5,8 @@ import SwiperCore from 'swiper';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -25,6 +27,9 @@ export default function Listing() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const params = useParams();
+  const navigate = useNavigate();
+
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -47,6 +52,32 @@ export default function Listing() {
     };
     fetchListing();
   }, [params.listingId]);
+
+  const handleBlockArticle = async () => {
+
+    try {
+      const data = {
+        listingId: params.listingId,
+        userId: currentUser._id
+      }
+
+      const response = await fetch('/server/user/blockArticle',{
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(data),
+      }); 
+       const getData = await response.json();
+      if( getData.success === false){
+           alert(getData.message);
+      }
+      navigate('/');
+    } catch (error) {
+      console.log("user or listing not found");
+    }
+      
+  }
 
   return (
     <main className="container mx-auto p-5">
@@ -82,7 +113,9 @@ export default function Listing() {
                 <button className="bg-red-500 text-white px-4 py-2 rounded">
                   Dislike
                 </button>
-                <button className="bg-gray-500 text-white px-4 py-2 rounded">
+                <button 
+                  onClick={handleBlockArticle}
+                 className="bg-gray-500 text-white px-4 py-2 rounded">
                   Block
                 </button>
               </div>

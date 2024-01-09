@@ -224,6 +224,19 @@ export default function Profile() {
             alt="profile"
             className="rounded-full h-20 w-20 object-cover cursor-pointer self-center mt-2"
           />
+          <p className='text-sm self-center'>
+          {fileUploadError ? (
+            <span className='text-red-700'>
+              Error Image upload (image must be less than 2 mb)
+            </span>
+          ) : filePerc > 0 && filePerc < 100 ? (
+            <span className='text-slate-700'>{`Uploading ${filePerc}%`}</span>
+          ) : filePerc === 100 ? (
+            <span className='text-green-700'>Image successfully uploaded!</span>
+          ) : (
+            ''
+          )}
+        </p>
 
           <input
             onChange={handleChange}
@@ -331,7 +344,7 @@ export default function Profile() {
                   onChange={() => handleCheckboxChange("space")}
                   className="mr-2"
                 />
-                <span className="text-lg">Space</span>
+                <span className="text-lg">space</span>
               </label>
 
               <label className="flex items-center">
@@ -342,7 +355,7 @@ export default function Profile() {
                   onChange={() => handleCheckboxChange("coding")}
                   className="mr-2"
                 />
-                <span className="text-lg">Coding</span>
+                <span className="text-lg">coding</span>
               </label>
 
               <label className="flex items-center">
@@ -353,7 +366,7 @@ export default function Profile() {
                   onChange={() => handleCheckboxChange("politics")}
                   className="mr-2"
                 />
-                <span className="text-lg">Politics</span>
+                <span className="text-lg">politics</span>
               </label>
             </div>
           </div>

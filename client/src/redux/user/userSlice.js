@@ -22,7 +22,7 @@ const userSlice = createSlice({
       state.error = null;
     },
     signInFailure: (state, action) => {
-      state.currentUser = action.payload;
+      state.error = action.payload;
       state.loading = false;
     },
     signUpStart: (state) => {
@@ -34,7 +34,7 @@ const userSlice = createSlice({
       state.error = null;
     },
     signUpFailure: (state, action) => {
-      state.currentUser = action.payload;
+      state.error = action.payload;
       state.loading = false;
     },
     updateUserStart: (state) => {
@@ -46,7 +46,7 @@ const userSlice = createSlice({
       state.error = null;
     },
     updateUserFailure: (state, action) => {
-      state.currentUser = action.payload;
+      state.error = action.payload;
       state.loading = false;
     },
     deleteUserStart: (state) => {
@@ -85,7 +85,7 @@ const userSlice = createSlice({
       state.articleLosding = false;
     },
     setDeleteListing: (state, action) => {
-        const deletedListingId = action.payload; // Assuming action.payload contains the deleted listing ID
+        const deletedListingId = action.payload; 
         state.userListings = state.userListings.filter(
           (userListing) => userListing._id !== deletedListingId
         );
