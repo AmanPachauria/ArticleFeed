@@ -33,7 +33,7 @@ export default function About() {
       <p className="text-sm text-gray-500">
         Looking to contribute? Visit our{" "}
         <Link
-          to="/sign-in"
+          to="/create-listing"
           className="text-blue-500 underline hover:text-blue-700"
         >
           Create Article
