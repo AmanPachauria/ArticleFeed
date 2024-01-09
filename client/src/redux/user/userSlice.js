@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  currentUserSignIn: false,
   currentUser: null,
   userListings: [],
   error: null,
@@ -89,6 +90,15 @@ const userSlice = createSlice({
           (userListing) => userListing._id !== deletedListingId
         );
     },
+    setCurrentUserSignIn:(state) => {
+      state.currentUserSignIn = true;
+    },
+    setCurrentUserSignOut:(state) => {
+      state.currentUserSignIn = false;
+    },
+    setCurrentUserDelete:(state) => {
+      state.currentUserSignIn = false;
+    },
       
   },
 });
@@ -112,7 +122,10 @@ export const {
   setUserListingStart,
   setUserListingSuccess,
   setUserListingFailure,
-  setDeleteListing
+  setDeleteListing,
+  setCurrentUserSignIn,
+  setCurrentUserSignOut,
+  setCurrentUserDelete
 } = userSlice.actions;
 
 export default userSlice.reducer;

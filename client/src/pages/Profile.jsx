@@ -21,7 +21,9 @@ import {
   signOutUserSuccess,
   setUserListingStart,
   setUserListingSuccess,
-  setUserListingFailure
+  setUserListingFailure,
+  setCurrentUserDelete,
+  setCurrentUserSignOut
 } from "../redux/user/userSlice";
 
 export default function Profile() {
@@ -163,6 +165,7 @@ export default function Profile() {
         return;
       }
       dispatch(deleteUserSuccess(data));
+      dispatch(setCurrentUserDelete())
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
     }
@@ -178,6 +181,7 @@ export default function Profile() {
         return;
       }
       dispatch(signOutUserSuccess(data));
+      dispatch(setCurrentUserSignOut());
     } catch (error) {
       dispatch(signOutUserFailure(data.message));
     }
@@ -205,7 +209,7 @@ export default function Profile() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded shadow-lg w-full max-w-md">
-        <h1 className="text-3xl font-semibold mb-6 text-center">Sign Up</h1>
+        <h1 className="text-3xl font-semibold mb-6 text-center">Profile</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             onChange={(e) => setFile(e.target.files[0])}
@@ -311,12 +315,12 @@ export default function Profile() {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  name="sports"
-                  checked={formData.preferences.includes("sports")}
-                  onChange={() => handleCheckboxChange("sports")}
+                  name="sport"
+                  checked={formData.preferences.includes("sport")}
+                  onChange={() => handleCheckboxChange("sport")}
                   className="mr-2"
                 />
-                <span className="text-lg">Sports</span>
+                <span className="text-lg">sport</span>
               </label>
 
               <label className="flex items-center">

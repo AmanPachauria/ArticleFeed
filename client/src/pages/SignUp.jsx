@@ -18,7 +18,8 @@ const SignUp = () => {
     dateOfBirth: "",
     password: "",
     confirmPassword: "",
-    avatar: currentUser.avatar,
+    avatar:"",
+    // avatar: currentUser.avatar !== null ? currentUser.avatar : "",
     preferences: [],
   });
 
@@ -74,6 +75,7 @@ const SignUp = () => {
         }
         
         dispatch(signUpSuccess(data));
+        console.log("navigate to /sign-in");
         navigate("/sign-in");
       } catch (error) {
         dispatch(signUpFailure(Data.message));
@@ -164,11 +166,11 @@ const SignUp = () => {
             <label className="flex items-center">
               <input
                 type="checkbox"
-                name="sports"
-                checked={formData.preferences.includes("sports")}
-                onChange={() => handleCheckboxChange("sports")}
+                name="sport"
+                checked={formData.preferences.includes("sport")}
+                onChange={() => handleCheckboxChange("sport")}
               />
-              <span className="ml-2">Sports</span>
+              <span className="ml-2">sport</span>
             </label>
 
             <label className="flex items-center">

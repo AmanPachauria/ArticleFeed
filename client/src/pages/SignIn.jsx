@@ -5,6 +5,7 @@ import {
   signInStart,
   signInSuccess,
   signInFailure,
+  setCurrentUserSignIn
 } from "../redux/user/userSlice.js";
 
 export default function SignIn() {
@@ -44,6 +45,7 @@ export default function SignIn() {
         return;
       }
       dispatch(signInSuccess(data));
+      dispatch(setCurrentUserSignIn());
       navigate("/");
     } catch (error) {
       dispatch(signInFailure(error.message));

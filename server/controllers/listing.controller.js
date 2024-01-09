@@ -63,3 +63,18 @@ export const getListing = async (req, res, next) => {
      next(error);
    }
 }
+
+export const getAllListing = async (req, res, next) => {
+  try {
+     const listings = await Listing.find();
+
+     if( !listings || listings.length < 1 ) {
+      return next(errorHandler(404, 'No listings found!'));
+     }
+     
+     res.status(200).json(listings);
+
+  } catch (error) {
+    
+  }
+}

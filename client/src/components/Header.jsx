@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function Header() {
-  const { currentUser } = useSelector( (state) => state.user);
+  const { currentUser, currentUserSignIn } = useSelector( (state) => state.user);
   console.log({currentUser})
   return (
     <header className='bg-gradient-to-r from-indigo-600 to-purple-600 shadow-md text-white'>
@@ -21,7 +21,7 @@ export default function Header() {
             <li className='hidden sm:inline'>About</li>
           </Link>
           <Link to='/profile' className='text-white hover:underline'>
-            { (currentUser) ? 
+            { (currentUser && currentUserSignIn) ? 
                (<img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt='prorfile' />
                ) : (
                <li className='text-white hover:underline'>Sign in</li>)}
