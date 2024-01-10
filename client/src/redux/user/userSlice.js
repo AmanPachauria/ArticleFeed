@@ -50,7 +50,7 @@ const userSlice = createSlice({
       state.loading = false;
     },
     deleteUserStart: (state) => {
-      state.loading = true;
+      // state.loading = true;
     },
     deleteUserSuccess: (state, action) => {
       state.currentUser = null;

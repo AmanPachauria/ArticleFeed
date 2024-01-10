@@ -54,6 +54,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(signUpStart());
     console.log(formData);
     if( formData.password === formData.confirmPassword ){
 
@@ -206,10 +207,11 @@ const SignUp = () => {
           </div>
 
           <button
+            disabled={loading}
             type="submit"
             className="bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
           >
-            Sign Up
+            {loading ? "Loading..." : "Sign Up"}
           </button>
 
           <div className="flex gap-2 mt-5">

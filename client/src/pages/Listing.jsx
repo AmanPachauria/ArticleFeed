@@ -107,12 +107,12 @@ export default function Listing() {
               </h1>
               <p className="text-gray-600 mb-4">{listing.description}</p>
               <div className="flex flex-col gap-5 lg:flex-row space-y-4 lg:space-x-4 lg:space-y-0">
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">
+                {/* <button className="bg-blue-500 text-white px-4 py-2 rounded">
                   Like
                 </button>
                 <button className="bg-red-500 text-white px-4 py-2 rounded">
                   Dislike
-                </button>
+                </button> */}
                 <button 
                   onClick={handleBlockArticle}
                  className="bg-gray-500 text-white px-4 py-2 rounded">
