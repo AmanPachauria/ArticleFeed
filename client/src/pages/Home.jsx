@@ -33,9 +33,17 @@ export default function Home() {
           return indexA - indexB;
         });
 
-        console.log("Sorted data", sortedData);
+        console.log("blockArticleIds", currentUser.blockArticle);
+        const blockedArticleIds = currentUser.blockArticle;
 
-        setListings(sortedData);
+        // Filter out objects with IDs present in blockedArticleIds
+        const filteredData = sortedData.filter(
+          (item) => !blockedArticleIds.includes(item._id)
+        );
+
+        console.log("Sorted data", filteredData);
+
+        setListings(filteredData);
         setError(null);
       } catch (error) {
         setError(`Error: ${error.message}`);

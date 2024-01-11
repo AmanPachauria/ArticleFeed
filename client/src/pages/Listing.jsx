@@ -5,8 +5,9 @@ import SwiperCore from 'swiper';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { blockIdForUser } from "../redux/user/userSlice";
 
 
 
@@ -28,8 +29,9 @@ export default function Listing() {
   const [error, setError] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, } = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -72,6 +74,7 @@ export default function Listing() {
       if( getData.success === false){
            alert(getData.message);
       }
+      dispatch(blockIdForUser(params.listingId));
       navigate('/');
     } catch (error) {
       console.log("user or listing not found");

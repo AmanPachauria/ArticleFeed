@@ -99,6 +99,16 @@ const userSlice = createSlice({
     setCurrentUserDelete:(state) => {
       state.currentUserSignIn = false;
     },
+    blockIdForUser: (state, action) => {
+      const blockListingId = action.payload;
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          blockArticle: [...state.currentUser.blockArticle, blockListingId],
+        },
+      };
+    }
       
   },
 });
@@ -125,7 +135,8 @@ export const {
   setDeleteListing,
   setCurrentUserSignIn,
   setCurrentUserSignOut,
-  setCurrentUserDelete
+  setCurrentUserDelete,
+  blockIdForUser
 } = userSlice.actions;
 
 export default userSlice.reducer;
